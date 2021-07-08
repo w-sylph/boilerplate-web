@@ -1,0 +1,172 @@
+<?php
+
+namespace App\Extenders\Controllers\ActivityLogs;
+
+use Illuminate\Http\Request;
+use App\Extenders\Controllers\FetchController as Controller;
+
+use App\Models\ActivityLogs\ActivityLog;
+
+use App\Models\Pages\Page;
+use App\Models\Products\Product;
+use App\Models\Pages\MetaTag;
+
+class ActivityLogFetchController extends Controller
+{
+    /**
+     * Set object class of fetched data
+     * 
+     * @return void
+     */
+    public function setObjectClass() 
+    {
+        $this->class = new ActivityLog;
+    }
+
+    /**
+     * Custom filtering of query
+     * 
+     * @param Illuminate\Support\Facades\DB $query
+     * @return Illuminate\Support\Facades\DB $query
+     */
+    public function filterQuery($query) 
+    {
+        $query->select(ActivityLog::TABLE_COLUMN);
+
+        $query = $this->additionalQuery($query);
+
+        $query = $this->filterSubject($query, 'sample', 'App\Models\Samples\SampleItem');
+        $query = $this->filterSubject($query, 'roles', 'App\Models\Roles\Role');
+        $query = $this->filterSubject($query, 'pageitems', 'App\Models\Pages\PageItem');
+        $query = $this->filterSubject($query, 'user', 'App\Models\Users\User');
+        $query = $this->filterSubject($query, 'admin', 'App\Models\Users\Admin');
+        $query = $this->filterSubject($query, 'articles', 'App\Models\Articles\Article');
+        $query = $this->filterSubject($query, 'carousels', 'App\Models\Carousels\Carousel');
+        $query = $this->filterSubject($query, 'collections', 'App\Models\Collections\Collection');
+        $query = $this->filterSubject($query, 'products', 'App\Models\Products\Product');
+        $query = $this->filterSubject($query, 'shipping-rates', 'App\Models\ShippingRates\ShippingRate');        
+        $query = $this->filterSubject($query, 'subject_type', $this->request->input('subject_type'));
+        $query = $this->filterSubject($query, 'product-variants', 'App\Models\Products\Product');
+        $query = $this->filterSubject($query, 'discounts', 'App\Models\Products\Discount');
+        $query = $this->filterSubject($query, 'invoices', 'App\Models\Products\Invoice');
+        $query = $this->filterSubject($query, 'payment-types', 'App\Models\Products\PaymentType');
+        $query = $this->filterSubject($query, 'subject_type', $this->request->input('subject_type'));
+
+        if ($this->request->filled('causer_type')) {
+            if ($this->request->input('causer_type') == 'SYSTEM') {
+                $query = $query->whereNull('causer_type');
+            } else {
+                $query = $query->where('causer_type', $this->request->input('causer_type'));
+            }
+        }
+        
+
+        if ($this->request->filled('product-variant-editor')) {
+            $item = Product::withTrashed()->findOrFail($this->request->input('id'));
+            $ids = $item->variants()->pluck('id')->toArray();
+            $query = $query->whereIn('subject_id', $ids)->where('subject_type', 'App\Models\Products\Product');
+        }
+
+        /* Get page and related page item logs */
+        if ($this->request->filled('pagecontents')) {
+            $subjects = ['App\Models\Pages\PageItem', 'App\Models\Pages\Page', ''];
+
+            $pageIds = $query->where('subject_type', 'App\Models\Pages\Page')->pluck('id')->toArray();
+            $pageItems = $query->where('subject_type', 'App\Models\Pages\PageItem');
+
+            if ($this->request->filled('id')) {
+                $page = Page::withTrashed()->findOrFail($this->request->input('id'));
+                $pageItemIds = $page->page_items()->pluck('id')->toArray();
+                $pageItems = $pageItems->whereIn('subject_id', $pageItemIds);
+            }
+
+            $pageItemIds = $pageItems->pluck('id')->toArray();
+
+            $query = $query->whereIn('id', array_merge($pageIds, $pageItemIds));
+        }
+
+        return $query;
+    }
+
+    /**
+     * Filter Subject
+     * @param  QueryBuilder $query   
+     * @param  string $param  
+     * @param  string $subject 
+     * @return Query Builder          
+     */
+    protected function filterSubject($query, $param, $subject, $id = false) 
+    {
+        if ($this->request->filled($param)) {
+            $filters = [
+                'subject_type' => $subject,
+            ];
+
+            if ($id) {
+                $filters = array_merge($filters, [
+                    'subject_id' => $id,
+                ]);
+            } else {
+                if ($this->request->filled('id')) {
+                    $filters = array_merge($filters, [
+                        'subject_id' => $this->request->input('id'),
+                    ]);
+                }
+            }
+
+            $query = $query->where($filters);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Additional Query for when being extended
+     * @param  QueryBuilder $query
+     * @return QueryBuilder
+     */
+    public function additionalQuery($query) 
+    {
+        return $query;
+    }
+
+    /**
+     * Custom formatting of data
+     * 
+     * @param Illuminate\Support\Collection $items
+     * @return array $result
+     */
+    public function formatData($items) 
+    {
+        $result = [];
+
+        foreach($items as $item) {
+            $data = $this->formatItem($item);
+
+            array_push($result, array_merge($data, [
+                'id' => $item->id,
+                'name' => $item->renderName(),
+                'caused_by' => $item->renderCauserName(),
+                'show_causer' => $item->renderCauserShowUrl(),
+                'subject_type' => $item->renderSubjectType(),
+                'subject_name' => $item->renderSubjectName(),
+                'created_at' => $item->renderDate(),
+            ]));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Additional property when extended
+     * 
+     * @param  App\Contracts\AvailablePosition
+     * @return array
+     */
+    protected function formatItem($item) 
+    {
+        return [
+            'showUrl' => $item->renderShowUrl(),
+        ];
+    }
+}

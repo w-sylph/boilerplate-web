@@ -1,0 +1,21 @@
+@import 'variables.scss';
+
+@import '../components/helpers.scss';
+@import '../components/transitions.scss';
+@import '../components/dialogs.scss';
+@import '../components/loaders.scss';
+
+html {
+    font-size: 14px;
+    background-color: #f4f6f9;
+}
+
+body {
+	font-family: inherit;
+	overflow-x: hidden;
+    background-color: #f4f6f9;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}

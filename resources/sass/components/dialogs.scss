@@ -1,0 +1,19 @@
+button.dg-btn.dg-btn--cancel {
+	border-color: $primary;
+    color: $primary;
+    background-color: #fff;
+}
+
+button.dg-btn.dg-btn--ok.dg-pull-right {
+	background-color: $primary;
+	color: #fff;
+	border-color: $primary;
+}
+
+.dg-title {
+	font-weight: bold;
+}
+
+.dg-btn-loader .dg-circle {
+  background-color: #fff !important;
+}

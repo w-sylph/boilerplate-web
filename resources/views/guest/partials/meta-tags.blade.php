@@ -1,0 +1,1 @@
+<meta name="page-slug" content="{{ isset($page_slug) ? $page_slug : '' }}">
