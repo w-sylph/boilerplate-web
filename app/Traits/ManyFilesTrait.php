@@ -190,7 +190,10 @@ trait ManyFilesTrait
 
     public static function getMediaLibrary($id = null) {
         $result = [];
-        $items = FileRecord::uniqueHash()->where('parent_type', static::class);
+        $query = new FileRecord;
+        $ids = FileRecord::select(['id', 'md5'])->groupBy('md5')->pluck('id')->toArray();
+        $query = $query->whereIn('id', $ids)->orWhereNull('md5');
+        $items = $query->where('parent_type', static::class);
 
         $collections = $items->paginate(12);
         $items = $collections->items();

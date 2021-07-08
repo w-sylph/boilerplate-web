@@ -174,7 +174,8 @@ export default {
             this.$emit('input', result);
         },
 
-        changestop(instance) {
+        changestop(event, instance) {
+            console.log(event, instance);
             let color = instance.getColor();
             this.inputChange(color);
         }

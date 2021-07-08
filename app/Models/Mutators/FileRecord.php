@@ -30,10 +30,8 @@ class FileRecord extends Model
      * Scopes
      */
     public function scopeUniqueHash($query) {
-        return $query->where(function($query) {
-            $ids = $query->groupBy('md5')->pluck('id')->toArray();
-            return $query->whereIn('id', $ids)->orWhereNull('md5');
-        });
+        $ids = static::select(['id', 'md5'])->groupBy('md5')->pluck('id')->toArray();
+        return $query->whereIn('id', $ids)->orWhereNull('md5');
     }
 
     /**
