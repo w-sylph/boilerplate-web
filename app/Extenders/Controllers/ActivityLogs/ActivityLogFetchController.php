@@ -41,15 +41,6 @@ class ActivityLogFetchController extends Controller
         $query = $this->filterSubject($query, 'user', 'App\Models\Users\User');
         $query = $this->filterSubject($query, 'admin', 'App\Models\Users\Admin');
         $query = $this->filterSubject($query, 'articles', 'App\Models\Articles\Article');
-        $query = $this->filterSubject($query, 'carousels', 'App\Models\Carousels\Carousel');
-        $query = $this->filterSubject($query, 'collections', 'App\Models\Collections\Collection');
-        $query = $this->filterSubject($query, 'products', 'App\Models\Products\Product');
-        $query = $this->filterSubject($query, 'shipping-rates', 'App\Models\ShippingRates\ShippingRate');        
-        $query = $this->filterSubject($query, 'subject_type', $this->request->input('subject_type'));
-        $query = $this->filterSubject($query, 'product-variants', 'App\Models\Products\Product');
-        $query = $this->filterSubject($query, 'discounts', 'App\Models\Products\Discount');
-        $query = $this->filterSubject($query, 'invoices', 'App\Models\Products\Invoice');
-        $query = $this->filterSubject($query, 'payment-types', 'App\Models\Products\PaymentType');
         $query = $this->filterSubject($query, 'subject_type', $this->request->input('subject_type'));
 
         if ($this->request->filled('causer_type')) {
@@ -60,13 +51,6 @@ class ActivityLogFetchController extends Controller
             }
         }
         
-
-        if ($this->request->filled('product-variant-editor')) {
-            $item = Product::withTrashed()->findOrFail($this->request->input('id'));
-            $ids = $item->variants()->pluck('id')->toArray();
-            $query = $query->whereIn('subject_id', $ids)->where('subject_type', 'App\Models\Products\Product');
-        }
-
         /* Get page and related page item logs */
         if ($this->request->filled('pagecontents')) {
             $subjects = ['App\Models\Pages\PageItem', 'App\Models\Pages\Page', ''];

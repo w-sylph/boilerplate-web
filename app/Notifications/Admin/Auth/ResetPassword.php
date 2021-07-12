@@ -56,9 +56,9 @@ class ResetPassword extends Notification
             ->subject(config('app.name') . ': ' . $this->title)
             ->greeting('Hello ' . $notifiable->renderName() . ',')
             ->line($this->message)
-            ->action(Lang::getFromJson('Reset Password'), route('admin.password.reset', [$this->token, $notifiable->email]))
-            ->line(Lang::getFromJson('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.admins.expire')]))
-            ->line(Lang::getFromJson('If you did not request a password reset, no further action is required.'));
+            ->action(Lang::get('Reset Password'), route('admin.password.reset', [$this->token, $notifiable->email]))
+            ->line(Lang::get('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.admins.expire')]))
+            ->line(Lang::get('If you did not request a password reset, no further action is required.'));
     }
 
     /**

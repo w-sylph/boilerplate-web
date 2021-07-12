@@ -15,8 +15,8 @@ use App\Exports\Samples\SampleItemExport;
 use App\Actions\Samples\SampleApprove;
 use App\Actions\Samples\SampleDeny;
 
-use App\Http\Requests\Samples\SampleItemStoreRequest;
-use App\Http\Requests\Samples\SampleItemDenyRequest;
+use App\Http\Requests\Admin\Samples\SampleItemStoreRequest;
+use App\Http\Requests\Admin\Samples\SampleItemDenyRequest;
 
 class SampleItemController extends Controller
 {

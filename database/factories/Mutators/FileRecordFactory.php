@@ -14,7 +14,7 @@ class FileRecordFactory extends Factory
      *
      * @var string
      */
-    protected $model = SampleItem::class;
+    protected $model = FileRecord::class;
 
     /**
      * Define the model's default state.

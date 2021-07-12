@@ -30,9 +30,38 @@
         </div>
 
         <ul class="nav nav-pills">
-            <li class="nav-item"><a @click="initList('table-1')" class="nav-link active" data-target="#tab1" href="#tab1" data-toggle="tab">Active</a></li>
-            <li class="nav-item"><a @click="initList('table-2')" class="nav-link" data-target="#tab2" href="#tab2" data-toggle="tab">Archived</a></li>
-            <li class="nav-item"><a @click="initList('table-3')" class="nav-link" data-target="#tab3" href="#tab3" data-toggle="tab">Activity Logs</a></li>
+            <li class="nav-item">
+                <a
+                    @click="initList('table-1')"
+                    class="nav-link active"
+                    data-target="#tab1"
+                    href="#tab1"
+                    data-toggle="tab"
+                >
+                    Active
+                </a>
+            </li>
+            <li class="nav-item">
+                <a
+                    @click="initList('table-2')"
+                    class="nav-link"
+                    data-target="#tab2"
+                    href="#tab2"
+                    data-toggle="tab"
+                >
+                    Archived</a>
+                </li>
+            <li class="nav-item">
+                <a
+                    @click="initList('table-3')"
+                    class="nav-link"
+                    data-target="#tab3"
+                    href="#tab3"
+                    data-toggle="tab"
+                >
+                    Activity Logs
+                </a>
+            </li>
         </ul>
         <div class="tab-content mt-3 mb-5">
             <div class="tab-pane show active" id="tab1">

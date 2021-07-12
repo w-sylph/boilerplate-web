@@ -6,11 +6,27 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\AdminUsers\AdminUserStoreRequest;
 
+use App\Traits\Controllers\HasPermissionTrait;
+
 use App\Models\Users\Admin;
 use App\Models\Roles\Role;
 
 class AdminUserController extends Controller
 {
+    use HasPermissionTrait;
+
+    public function __construct()
+    {
+        $this->checkPermissions();
+    }
+
+    protected function getPermissions()
+    {
+        return [
+            'admin.activity-logs.crud'
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -69,62 +69,61 @@
             @load="load"
         >
             <template #body="{ items }">
-                <template v-for="(item, index) in items">
-                    <tr
-                        :key="`item-${index}`"
-                        :data-id="item.id"
-                    >
-                        <td>
-                            <checkbox
-                                v-model="selected_ids"
-                                class="w-100 p-0 m-0"
-                                name="selected_ids[]"
-                                :value="item.id"
-                            />
-                        </td>
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>
-                            <span
-                                class="badge"
-                                :class="item.status_class"
-                            >{{ item.status }}</span>
-                        </td>
-                        <td>{{ item.created_at }}</td>
-                        <td v-if="!noAction">
-                            <div class="mb-2">
-                                <view-button :href="item.showUrl" />
+                <tr
+                    v-for="(item, index) in items"
+                    :key="`item-${index}`"
+                    :data-id="item.id"
+                >
+                    <td>
+                        <checkbox
+                            v-model="selected_ids"
+                            class="w-100 p-0 m-0"
+                            name="selected_ids[]"
+                            :value="item.id"
+                        />
+                    </td>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>
+                        <span
+                            class="badge"
+                            :class="item.status_class"
+                        >{{ item.status }}</span>
+                    </td>
+                    <td>{{ item.created_at }}</td>
+                    <td v-if="!noAction">
+                        <div class="mb-2">
+                            <view-button :href="item.showUrl" />
 
-                                <action-button
-                                    small
-                                    color="btn-danger"
-                                    alt-color="btn-warning"
-                                    :show-alt="item.trashed"
-                                    :action-url="item.archiveUrl"
-                                    :alt-action-url="item.restoreUrl"
-                                    icon="fas fa-trash"
-                                    alt-icon="fas fa-trash-restore-alt"
-                                    confirm-dialog
-                                    :disabled="loading"
-                                    title="Archive item"
-                                    alt-title="Restore Iiem"
-                                    :message="'Are you sure you want to archive ' + item.name + '?'"
-                                    :alt-message="'Are you sure you want to restore ' + item.name + '?'"
-                                    @load="load"
-                                    @success="sync"
-                                />
-                            </div>
-
-                            <sample-item-buttons
-                                v-if="!item.trashed"
-                                :item="item"
+                            <action-button
                                 small
+                                color="btn-danger"
+                                alt-color="btn-warning"
+                                :show-alt="item.trashed"
+                                :action-url="item.archiveUrl"
+                                :alt-action-url="item.restoreUrl"
+                                icon="fas fa-trash"
+                                alt-icon="fas fa-trash-restore-alt"
+                                confirm-dialog
+                                :disabled="loading"
+                                title="Archive item"
+                                alt-title="Restore Iiem"
+                                :message="'Are you sure you want to archive ' + item.name + '?'"
+                                :alt-message="'Are you sure you want to restore ' + item.name + '?'"
                                 @load="load"
-                                @fetch="update"
+                                @success="sync"
                             />
-                        </td>
-                    </tr>
-                </template>
+                        </div>
+
+                        <sample-item-buttons
+                            v-if="!item.trashed"
+                            :item="item"
+                            small
+                            @load="load"
+                            @fetch="update"
+                        />
+                    </td>
+                </tr>
             </template>
         </data-table>
 
