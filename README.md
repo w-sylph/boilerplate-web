@@ -6,8 +6,11 @@ Copy .env.example for values basis
 Run the following commands
 
 ```bash
-# Install php dependencies
-composer update
+# Install Laravel Sail
+composer require laravel/sail --dev --ignore-platform-reqs
+
+# Start and setup Docker
+./vendor/bin/sail up
 
 # Install node modules
 npm install
