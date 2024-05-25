@@ -22,17 +22,8 @@ mix.webpackConfig({
             App: path.resolve(__dirname, 'resources/js'),
         }
     },
-
-    // enable linter on watch
-    module: {
-        rules: [
-            {
-                enforce: 'pre',
-                test: /\.(js|vue)$/,
-                loader: 'eslint-loader',
-                exclude: /node_modules/
-            }
-        ]
+    stats: {
+        children: true
     }
 });
 

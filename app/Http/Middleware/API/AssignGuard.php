@@ -18,7 +18,7 @@ class AssignGuard
         if($guard != null) {
             auth()->shouldUse($guard);
         }
-        
+
         return $next($request);
     }
 }
