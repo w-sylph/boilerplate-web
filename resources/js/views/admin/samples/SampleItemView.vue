@@ -35,15 +35,6 @@
                             label="Description"
                         />
 
-                        <text-editor
-                            v-model="item.description"
-                            required
-                            class="col-12"
-                            label="Description"
-                            name="description"
-                            row="5"
-                        />
-
                         <selector
                             v-model="item.status"
                             required

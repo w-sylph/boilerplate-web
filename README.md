@@ -19,7 +19,7 @@ npm install
 npm run dev
 
 # Run custom laravel installation process
-php artisan app:install
+sail artisan app:install
 ```
 
 ## Dependencies

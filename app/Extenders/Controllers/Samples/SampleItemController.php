@@ -167,6 +167,4 @@ class SampleItemController extends Controller
             'message' => $message,
         ]);
     }
-
-    
 }

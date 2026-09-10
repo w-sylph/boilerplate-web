@@ -16,7 +16,7 @@ class CkeditorController extends Controller
                     $url = config('filesystems.disks.s3.endpoint');
                 break;
         }
-    	
+
     	$path = $url . $result;
 
     	return response()->json([
